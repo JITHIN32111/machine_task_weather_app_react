@@ -13,7 +13,7 @@ function App() {
   const fetchWeatherData = async (location) => {
     try {
       const response = await fetch(
-        `https://api.tomorrow.io/v4/weather/forecast?location=${location}&apikey=Pf5zCkolI2IovaOWHMmg0b7hHXOYcXnP&units=metric`,
+        `https://api.tomorrow.io/v4/weather/forecast?location=${location}&apikey=drdCrBbPdIiRFCU1cBKlPra28UaHSG2S`,
         {
           method: "GET",
           headers: {
@@ -43,15 +43,17 @@ function App() {
 
   useEffect(() => {
     // Fetch weather data when the component mounts
-    fetchWeatherData(currentLocation);
+    if (currentLocation) {
+      fetchWeatherData(currentLocation);
+    }
   }, [currentLocation]);
   return (
     <>
     {weatherData?(<div>
 <div className='mx-auto  max-w-[370px] sm:max-w-screen-sm md:max-w-screen-md lg:max-w-[900px] 2xl:max-w-screen-lg  mt-4 py-5 px-4 sm:px-32 bg-gradient-to-br from-cyan-700 to to-blue-700 h-fit shadow-xl shadow-gray-400 rounded-lg'>
       <Inputs/>
-      <TimeAndLocation/>
-      <TemperatureAndDetails/>
+      <TimeAndLocation currentPlace={weatherData} />
+      <TemperatureAndDetails details={weatherData} />
 
     </div>
     <div className='mx-auto  max-w-[370px] sm:max-w-screen-sm md:max-w-screen-md lg:max-w-[900px] 2xl:max-w-screen-lg  mt-4 py-5 px-4 sm:px-32 bg-gradient-to-br from-cyan-700 to to-blue-700 h-fit shadow-xl shadow-gray-400 rounded-lg'>
