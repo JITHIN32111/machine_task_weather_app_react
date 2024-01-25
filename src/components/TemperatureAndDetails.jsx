@@ -12,8 +12,7 @@ import cloudly from "/cloudy.svg";
 import { useWeatherContext } from "../context/WeatherContext";
 function TemperatureAndDetails() {
   const { weatherData } = useWeatherContext();
-  console.log(":::::::::::::::");
-  console.log(weatherData);
+
   const firstMinuteTemperature =
     weatherData?.timelines?.minutely?.[0]?.values?.temperature;
   const realFeel =
