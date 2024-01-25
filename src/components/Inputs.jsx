@@ -1,16 +1,24 @@
-import React from "react";
+import React,{useState} from "react";
 import { IoSearch } from "react-icons/io5";
 import { IoLocationOutline } from "react-icons/io5";
-function Inputs() {
+function Inputs({fetchWeatherData}) {
+  const [place, setPlace] = useState('');
+  const handlePlace = () => {
+    fetchWeatherData(place);
+  };
   return (
     <div className="flex flex-row justify-center md:my-6">
       <div className="flex flex-row w-3/4 items-center     justify-center space-x-2">
         <input
+         value={place}
+         onChange={(e) => {
+           setPlace(e.target.value);
+         }}
           type="text"
           placeholder="Search for city..."
           className="text-lg placeholder:lowercase font-light p-1 sm:p-2 rounded-md w-full shadow-xl focus:outline-none capitalize"
           name=""id=""/>
-        <IoSearch className="cursor  pointer transition text-white ease-out hover:scale-125" size={25}/>
+        <IoSearch onClick={handlePlace} className="cursor  pointer transition text-white ease-out hover:scale-125" size={25}/>
         <IoLocationOutline className="cursor  pointer text-white transition ease-out hover:scale-125" size={25}/>
       </div>
       <div className="flex flex-row w-1/4 items-center text-white justify-center">

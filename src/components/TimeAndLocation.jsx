@@ -1,6 +1,6 @@
 import React from "react";
-function TimeAndLocation(currentPlace) {
-
+function TimeAndLocation({currentPlace}) {
+  const cityName = currentPlace?.location?.name?.split(",")[0];
   return (
     <div>
       <div className="flex items-center justify-center my-6">
@@ -10,10 +10,7 @@ function TimeAndLocation(currentPlace) {
       </div>
       <div className="flex items-center justify-center my-3">
       <p className="text-white text-3xl font-medium">
-          {currentPlace &&
-            currentPlace.currentPlace &&
-            currentPlace.currentPlace.location &&
-            currentPlace.currentPlace.location.name}
+          {cityName}
         </p>      </div>
     </div>
   );

@@ -4,6 +4,7 @@ import TimeAndLocation from './components/TimeAndLocation'
 import TemperatureAndDetails from './components/TemperatureAndDetails'
 import Forecast from './components/Forecast'
 import {useGetLocation} from './costom_hook/UseLocation'
+
 function App() {
   const [weatherData, setWeatherData] = useState(null);
   const currentLocation = useGetLocation();
@@ -13,7 +14,7 @@ function App() {
   const fetchWeatherData = async (location) => {
     try {
       const response = await fetch(
-        `https://api.tomorrow.io/v4/weather/forecast?location=${location}&apikey=drdCrBbPdIiRFCU1cBKlPra28UaHSG2S`,
+        `https://api.tomorrow.io/v4/weather/forecast?location=${location}&apikey=b346aGinLGpyKiAcstfdwi4nNdR8cby8`,
         {
           method: "GET",
           headers: {
@@ -33,9 +34,7 @@ function App() {
     }
   };
 
-  const handlePlace = () => {
-    fetchWeatherData(place);
-  };
+  
 
   const toggleTemperatureUnit = () => {
     setIsCelsius(!isCelsius);
@@ -51,13 +50,13 @@ function App() {
     <>
     {weatherData?(<div>
 <div className='mx-auto  max-w-[370px] sm:max-w-screen-sm md:max-w-screen-md lg:max-w-[900px] 2xl:max-w-screen-lg  mt-4 py-5 px-4 sm:px-32 bg-gradient-to-br from-cyan-700 to to-blue-700 h-fit shadow-xl shadow-gray-400 rounded-lg'>
-      <Inputs/>
+      <Inputs fetchWeatherData={fetchWeatherData}/>
       <TimeAndLocation currentPlace={weatherData} />
       <TemperatureAndDetails details={weatherData} />
 
     </div>
     <div className='mx-auto  max-w-[370px] sm:max-w-screen-sm md:max-w-screen-md lg:max-w-[900px] 2xl:max-w-screen-lg  mt-4 py-5 px-4 sm:px-32 bg-gradient-to-br from-cyan-700 to to-blue-700 h-fit shadow-xl shadow-gray-400 rounded-lg'>
-    <Forecast/>
+    <Forecast details={weatherData} fetchWeatherData={fetchWeatherData}/>
     <Forecast/>
 
     </div>

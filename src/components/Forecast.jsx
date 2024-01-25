@@ -6,40 +6,40 @@ import sun from "/day.svg";
 import rain from "/rainy-6.svg";
 import snow from "/snowy-3.svg";
 
-function Forecast() {
-  // Configuration for the react-slick slider
+function Forecast({ details ,fetchWeatherData}) {
   const sliderSettings = {
     infinite: false,
     slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: 576, // Small devices (576px and up)
+        breakpoint: 576,
         settings: {
           slidesToShow: 3,
         },
       },
       {
-        breakpoint: 768, // Medium devices (768px and up)
+        breakpoint: 768,
         settings: {
           slidesToShow: 4,
         },
       },
       {
-        breakpoint: 992, // Large devices (992px and up)
+        breakpoint: 992,
         settings: {
           slidesToShow: 5,
         },
       },
       {
-        breakpoint: 1600, // Extra-large devices (1200px and up)
+        breakpoint: 1600,
         settings: {
           slidesToShow: 5,
         },
       },
     ],
   };
-  
-
+  const handleClick = (place) => {
+    fetchWeatherData(place);
+  };
   return (
     <div>
       <div className="flex items-center justify-start my-2">
@@ -47,34 +47,17 @@ function Forecast() {
       </div>
       <hr className="my-2" />
       <Slider {...sliderSettings}>
-        <div className="flex cursor-pointer flex-col text-white gap-y-0 items-center justify-center">
-          <p className="font-light px-6 text-sm mb-2">4:30</p>
-          <img src={sun} className="w-20" alt="" />
-          <p className="font-medium px-7 mt-2" >22°</p>
-        </div>
-
-        <div className="flex flex-col text-white gap-y-0 items-center justify-center">
-          <p className="font-light px-6 text-sm mb-2">4:30</p>
-          <img src={snow} className="w-20 " alt="" />
-          <p className="font-medium px-7 mt-2" >22°</p>
-        </div>
-
-        <div className="flex  flex-col text-white gap-y-0 items-center justify-center">
-          <p className="font-light px-6 text-sm mb-2">4:30</p>
-          <img src={sun} className="w-20 " alt="" />
-          <p className="font-medium px-7 mt-2" >22°</p>
-        </div>
-        <div className="flex flex-col text-white gap-y-0 items-center justify-center">
-          <p className="font-light px-6 text-sm mb-2">4:30</p>
-          <img src={rain} className="w-20 " alt="" />
-          <p className="font-medium px-7 mt-2" >22°</p>
-        </div> 
-        <div className="flex flex-col text-white gap-y-0 items-center justify-center">
-          <p className="font-light px-6 text-sm mb-2">4:30</p>
-          <img src={sun} className="w-20 " alt="" />
-          <p className="font-medium px-7 mt-2" >22°</p>
-        </div>
-        {/* Add more forecast items as needed */}
+        {details?.timelines?.daily?.map((dailyForecast, index) => (
+          <div key={index} className="flex cursor-pointer flex-col text-white gap-y-0 items-center justify-center">
+            <p className="font-light px-6 text-sm mb-2">{new Date(dailyForecast.time).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: true})}</p>
+            {/* Use conditionals based on the forecast details */}
+            {dailyForecast.values.cloudBaseAvg > 0.5 ? (
+              <img onClick={() => handleClick(dailyForecast?.location?.name)} src={rain} className="w-20" alt="" />            ) : (
+              <img onClick={handleClick} src={sun} className="w-20" alt="" />
+            )}
+            <p className="font-medium px-7 mt-2">{dailyForecast?.values?.temperatureAvg}°</p>
+          </div>
+        ))}
       </Slider>
     </div>
   );
