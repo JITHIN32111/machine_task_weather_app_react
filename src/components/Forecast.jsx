@@ -49,7 +49,7 @@ function Forecast() {
       <Slider {...sliderSettings}>
         <div className="flex cursor-pointer flex-col text-white gap-y-0 items-center justify-center">
           <p className="font-light px-6 text-sm mb-2">4:30</p>
-          <img src={sun} className="w-20 " alt="" />
+          <img src={sun} className="w-20" alt="" />
           <p className="font-medium px-7 mt-2" >22°</p>
         </div>
 
@@ -68,7 +68,8 @@ function Forecast() {
           <p className="font-light px-6 text-sm mb-2">4:30</p>
           <img src={rain} className="w-20 " alt="" />
           <p className="font-medium px-7 mt-2" >22°</p>
-        </div> <div className="flex flex-col text-white gap-y-0 items-center justify-center">
+        </div> 
+        <div className="flex flex-col text-white gap-y-0 items-center justify-center">
           <p className="font-light px-6 text-sm mb-2">4:30</p>
           <img src={sun} className="w-20 " alt="" />
           <p className="font-medium px-7 mt-2" >22°</p>
