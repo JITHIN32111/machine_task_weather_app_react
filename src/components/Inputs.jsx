@@ -8,7 +8,7 @@ function Inputs() {
         <input
           type="text"
           placeholder="Search for city..."
-          className="text-lg placeholder:lowercase font-light p-1 sm:p-2 w-full shadow-xl focus:outline-none capitalize"
+          className="text-lg placeholder:lowercase font-light p-1 sm:p-2 rounded-md w-full shadow-xl focus:outline-none capitalize"
           name=""id=""/>
         <IoSearch className="cursor  pointer transition text-white ease-out hover:scale-125" size={25}/>
         <IoLocationOutline className="cursor  pointer text-white transition ease-out hover:scale-125" size={25}/>
