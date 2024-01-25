@@ -39,11 +39,10 @@ export const useGetLocation = () => {
         console.error("Geolocation error:", error);
       });
 
-    // Cleanup function to clear the watch position when the component unmounts
     return () => {
       navigator.geolocation.clearWatch(watchId);
     };
-  }, []); // Empty dependency array ensures that this effect runs once after the initial render
+  }, []); 
 
   return currentLocation;
 };

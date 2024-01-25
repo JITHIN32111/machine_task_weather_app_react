@@ -8,13 +8,15 @@ export const useWeatherContext = () => {
 
 export const WeatherProvider = ({ children }) => {
   const [weatherData, setWeatherData] = useState(null);
-
+  const [measure, setMeasure] = useState("celcious");
   const updateWeatherData = (data) => {
     setWeatherData(data);
   };
-
+  const updateMeasure = (newMeasure) => {
+    setMeasure(newMeasure);
+  };
   return (
-    <WeatherContext.Provider value={{ weatherData, updateWeatherData }}>
+    <WeatherContext.Provider value={{  weatherData, updateWeatherData, measure, updateMeasure }}>
       {children}
     </WeatherContext.Provider>
   );

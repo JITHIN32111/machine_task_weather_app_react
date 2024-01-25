@@ -4,10 +4,33 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import sun from "/day.svg";
 import rain from "/rainy-6.svg";
-import snow from "/snowy-3.svg";
+import clearSky from "/day.svg";
+import partlyCloudly from "/cloudy-day-3.svg";
+import cloudly from "/cloudy.svg";
 import { useWeatherContext } from "../context/WeatherContext";
 
 function Forecast({ details, fetchWeatherData }) {
+  const { weatherData, measure } = useWeatherContext();
+
+  const convertTemperature = (celsius) => {
+    if (measure === "fara") {
+      const fahrenheit = (celsius * 9) / 5 + 32;
+      return fahrenheit.toFixed(1);
+    } else {
+      return celsius.toFixed(1);
+    }
+  };
+
+  const getWeatherDescription = (cloudBaseAvg) => {
+    if (cloudBaseAvg < 1) {
+      return { description: "Clear Sky", img: clearSky };
+    } else if (cloudBaseAvg < 3) {
+      return { description: "Partly Cloudy", img: partlyCloudly };
+    } else {
+      return { description: "Cloudy", img: cloudly };
+    }
+  };
+
   const sliderSettings = {
     infinite: false,
     slidesToScroll: 1,
@@ -38,11 +61,7 @@ function Forecast({ details, fetchWeatherData }) {
       },
     ],
   };
-  // const handleClick = (place) => {
-  //   fetchWeatherData(place);
-  //   console.log(place);
-  // };
-  const { weatherData } = useWeatherContext();
+
   return (
     <div>
       <div className="flex items-center justify-start my-2">
@@ -50,25 +69,26 @@ function Forecast({ details, fetchWeatherData }) {
       </div>
       <hr className="my-2" />
       <Slider {...sliderSettings}>
-        {weatherData?.timelines?.daily?.map((dailyForecast, index) => (
-          <div
-            key={index}
-            className="flex cursor-pointer flex-col text-white gap-y-0 items-center justify-center"
-          >
-            {new Date(dailyForecast.time).toLocaleDateString([], {
-              weekday: "short",
-            })}{" "}
-            {/* Use conditionals based on the forecast details */}
-            {dailyForecast.values.cloudBaseAvg > 0.5 ? (
-              <img src={rain} className="w-20" alt="" />
-            ) : (
-              <img src={sun} className="w-20" alt="" />
-            )}
-            <p className="font-medium px-7 mt-2">
-              {dailyForecast?.values?.temperatureAvg}°
-            </p>
-          </div>
-        ))}
+        {weatherData?.timelines?.daily?.map((dailyForecast, index) => {
+          const { description, img: weatherImg } = getWeatherDescription(
+            dailyForecast.values.cloudBaseAvg
+          );
+
+          return (
+            <div
+              key={index}
+              className="flex cursor-pointer flex-col text-white gap-y-0 items-center justify-center"
+            >
+              {new Date(dailyForecast.time).toLocaleDateString([], {
+                weekday: "short",
+              })}
+              <img src={weatherImg} className="w-20" alt="" />
+              <p className="font-medium px-7 mt-2">
+                {convertTemperature(dailyForecast?.values?.temperatureAvg)}°
+              </p>
+            </div>
+          );
+        })}
       </Slider>
     </div>
   );

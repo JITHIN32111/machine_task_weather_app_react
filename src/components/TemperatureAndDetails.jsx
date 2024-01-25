@@ -1,5 +1,4 @@
 import React from "react";
-import img from "../../public/cloudy.svg";
 import { WiHumidity } from "react-icons/wi";
 import { FaTemperatureHigh } from "react-icons/fa";
 import { FiWind } from "react-icons/fi";
@@ -11,10 +10,17 @@ import partlyCloudly from "/cloudy-day-3.svg";
 import cloudly from "/cloudy.svg";
 import { useWeatherContext } from "../context/WeatherContext";
 function TemperatureAndDetails() {
-  const { weatherData } = useWeatherContext();
-
+  const { weatherData,measure,updateMeasure} = useWeatherContext();
+  const convertTemperature = (celsius) => {
+    if (measure === "fara") {
+      const fahrenheit = (celsius * 9/5) + 32;
+      return fahrenheit.toFixed(1); 
+    } else {
+      return celsius.toFixed(1);
+    }
+  };
   const firstMinuteTemperature =
-    weatherData?.timelines?.minutely?.[0]?.values?.temperature;
+  convertTemperature(weatherData?.timelines?.minutely?.[0]?.values?.temperature);
   const realFeel =
     weatherData?.timelines?.minutely?.[0]?.values?.temperatureApparent;
   const humidity = weatherData?.timelines?.minutely?.[0]?.values?.humidity;
@@ -52,7 +58,7 @@ function TemperatureAndDetails() {
       return { description: "Cloudy", img: cloudly };
     }
   }
-  const { description, img: weatherImg } = getWeatherDescription(cloudBaseAvg);
+  const { description, img} = getWeatherDescription(cloudBaseAvg);
   return (
     <div>
       <div className="flex items-center  justify-center py-4 sm:py-2 text-xl text-cyan-300">
@@ -61,6 +67,7 @@ function TemperatureAndDetails() {
       <div className="flex flex-row items-center justify-between sm:px-1 px-2 text-white py-3 sm:py-2">
         <img src={img} alt="" className="w-20" />
         <p className="sm:text-5xl text-4xl">{firstMinuteTemperature}°</p>
+        
         <div className="flex flex-col space-y-2">
           <div className="flex ml-2 font-light text-sm items-center justify-center">
             <FaTemperatureHigh size={18} className="mr-1" />
