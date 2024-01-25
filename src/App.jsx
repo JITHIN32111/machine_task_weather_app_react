@@ -14,7 +14,7 @@ function App() {
   const fetchWeatherData = async (location) => {
     try {
       const response = await fetch(
-        `https://api.tomorrow.io/v4/weather/forecast?location=${location}&apikey=b346aGinLGpyKiAcstfdwi4nNdR8cby8`,
+        `https://api.tomorrow.io/v4/weather/forecast?location=${location}&apikey=${import.meta.env.TOMMORROW_IO_API}`,
         {
           method: "GET",
           headers: {

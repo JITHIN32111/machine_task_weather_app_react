@@ -16,7 +16,7 @@ export const useGetLocation = () => {
     const fetchLocationData = async (coordinates) => {
       try {
         const coordinateResponse = await fetch(
-          `https://api.opencagedata.com/geocode/v1/json?q=${coordinates}&key=45228461d9a245fea4ca7a1569e0b2a4`
+          `https://api.opencagedata.com/geocode/v1/json?q=${coordinates}&key=${import.meta.env.OPENCAGE_API_KEY}`
         );
         const coordinateData = await coordinateResponse.json();
 
