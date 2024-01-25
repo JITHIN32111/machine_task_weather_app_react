@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import Inputs from './components/Inputs'
-import TimeAndLocation from './components/TimeAndLocation'
-import TemperatureAndDetails from './components/TemperatureAndDetails'
-import Forecast from './components/Forecast'
-import {useGetLocation} from './costom_hook/UseLocation'
-
+import Inputs from "./components/Inputs";
+import TimeAndLocation from "./components/TimeAndLocation";
+import TemperatureAndDetails from "./components/TemperatureAndDetails";
+import Forecast from "./components/Forecast";
+import { useGetLocation } from "./costom_hook/UseLocation";
+import { useWeatherContext } from "./context/WeatherContext";
 function App() {
-  const [weatherData, setWeatherData] = useState(null);
+  // const [weatherData, setWeatherData] = useState(null);
   const currentLocation = useGetLocation();
-  const [place, setPlace] = useState('');
+  const [place, setPlace] = useState("");
   const [isCelsius, setIsCelsius] = useState(true);
-
+  const { weatherData, updateWeatherData } = useWeatherContext();
   const fetchWeatherData = async (location) => {
     try {
       const response = await fetch(
@@ -25,16 +25,39 @@ function App() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
+  
       const data = await response.json();
       console.log(data);
-      setWeatherData(data);
+  
+      
+      updateWeatherData(data);
     } catch (error) {
       console.error("Error fetching weather data:", error);
     }
   };
-
   
+  // const fetchWeatherData = async (location) => {
+  //   try {
+  //     const response = await fetch(
+  //       `https://api.tomorrow.io/v4/weather/forecast?location=${location}&apikey=b346aGinLGpyKiAcstfdwi4nNdR8cby8`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           Accept: "application/json",
+  //         },
+  //       }
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+
+  //     const data = await response.json();
+  //     console.log(data);
+  //     setWeatherData(data);
+  //   } catch (error) {
+  //     console.error("Error fetching weather data:", error);
+  //   }
+  // };
 
   const toggleTemperatureUnit = () => {
     setIsCelsius(!isCelsius);
@@ -48,25 +71,24 @@ function App() {
   }, [currentLocation]);
   return (
     <>
-    {weatherData?(<div>
-<div className='mx-auto  max-w-[370px] sm:max-w-screen-sm md:max-w-screen-md lg:max-w-[900px] 2xl:max-w-screen-lg  mt-4 py-5 px-4 sm:px-32 bg-gradient-to-br from-cyan-700 to to-blue-700 h-fit shadow-xl shadow-gray-400 rounded-lg'>
-      <Inputs fetchWeatherData={fetchWeatherData}/>
-      <TimeAndLocation currentPlace={weatherData} />
-      <TemperatureAndDetails details={weatherData} />
-
-    </div>
-    <div className='mx-auto  max-w-[370px] sm:max-w-screen-sm md:max-w-screen-md lg:max-w-[900px] 2xl:max-w-screen-lg  mt-4 py-5 px-4 sm:px-32 bg-gradient-to-br from-cyan-700 to to-blue-700 h-fit shadow-xl shadow-gray-400 rounded-lg'>
-    <Forecast details={weatherData} fetchWeatherData={fetchWeatherData}/>
-    <Forecast/>
-
-    </div>
-</div>):(<p>Loading weather data...</p>)}
-
-
-    
+      {weatherData ? (
+        <div>
+          <div className="mx-auto  max-w-[370px] sm:max-w-screen-sm md:max-w-screen-md lg:max-w-[900px] 2xl:max-w-screen-lg  mt-4 py-5 px-4 sm:px-32 bg-gradient-to-br from-cyan-700 to to-blue-700 h-fit shadow-xl shadow-gray-400 rounded-lg">
+            <Inputs fetchWeatherData={fetchWeatherData} />
+            <TimeAndLocation />
+            <TemperatureAndDetails  />
+          </div>
+          <div className="mx-auto  max-w-[370px] sm:max-w-screen-sm md:max-w-screen-md lg:max-w-[900px] 2xl:max-w-screen-lg  mt-4 py-5 px-4 sm:px-32 bg-gradient-to-br from-cyan-700 to to-blue-700 h-fit shadow-xl shadow-gray-400 rounded-lg">
+            <Forecast
+            
+            />
+          </div>
+        </div>
+      ) : (
+        <p>Loading weather data...</p>
+      )}
     </>
-    
-  )
+  );
 }
 
-export default App
+export default App;

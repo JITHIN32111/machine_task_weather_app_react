@@ -5,8 +5,9 @@ import "slick-carousel/slick/slick-theme.css";
 import sun from "/day.svg";
 import rain from "/rainy-6.svg";
 import snow from "/snowy-3.svg";
+import { useWeatherContext } from "../context/WeatherContext";
 
-function Forecast({ details ,fetchWeatherData}) {
+function Forecast({ details, fetchWeatherData }) {
   const sliderSettings = {
     infinite: false,
     slidesToScroll: 1,
@@ -37,25 +38,35 @@ function Forecast({ details ,fetchWeatherData}) {
       },
     ],
   };
-  const handleClick = (place) => {
-    fetchWeatherData(place);
-  };
+  // const handleClick = (place) => {
+  //   fetchWeatherData(place);
+  //   console.log(place);
+  // };
+  const { weatherData } = useWeatherContext();
   return (
     <div>
       <div className="flex items-center justify-start my-2">
-        <p className="text-white font-medium uppercase">Hourly forecast</p>
+        <p className="text-white font-medium uppercase">daily forecast</p>
       </div>
       <hr className="my-2" />
       <Slider {...sliderSettings}>
-        {details?.timelines?.daily?.map((dailyForecast, index) => (
-          <div key={index} className="flex cursor-pointer flex-col text-white gap-y-0 items-center justify-center">
-            <p className="font-light px-6 text-sm mb-2">{new Date(dailyForecast.time).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hour12: true})}</p>
+        {weatherData?.timelines?.daily?.map((dailyForecast, index) => (
+          <div
+            key={index}
+            className="flex cursor-pointer flex-col text-white gap-y-0 items-center justify-center"
+          >
+            {new Date(dailyForecast.time).toLocaleDateString([], {
+              weekday: "short",
+            })}{" "}
             {/* Use conditionals based on the forecast details */}
             {dailyForecast.values.cloudBaseAvg > 0.5 ? (
-              <img onClick={() => handleClick(dailyForecast?.location?.name)} src={rain} className="w-20" alt="" />            ) : (
-              <img onClick={handleClick} src={sun} className="w-20" alt="" />
+              <img src={rain} className="w-20" alt="" />
+            ) : (
+              <img src={sun} className="w-20" alt="" />
             )}
-            <p className="font-medium px-7 mt-2">{dailyForecast?.values?.temperatureAvg}°</p>
+            <p className="font-medium px-7 mt-2">
+              {dailyForecast?.values?.temperatureAvg}°
+            </p>
           </div>
         ))}
       </Slider>

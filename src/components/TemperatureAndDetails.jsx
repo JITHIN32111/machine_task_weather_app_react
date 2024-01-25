@@ -6,19 +6,30 @@ import { FiWind } from "react-icons/fi";
 import { WiSunrise } from "react-icons/wi";
 import { GiSunset } from "react-icons/gi";
 import { IoSunnySharp } from "react-icons/io5";
-function TemperatureAndDetails({ details }) {
+import clearSky from "/day.svg";
+import partlyCloudly from "/cloudy-day-3.svg";
+import cloudly from "/cloudy.svg";
+import { useWeatherContext } from "../context/WeatherContext";
+function TemperatureAndDetails() {
+  const { weatherData } = useWeatherContext();
   console.log(":::::::::::::::");
+  console.log(weatherData);
   const firstMinuteTemperature =
-    details?.timelines?.minutely?.[0]?.values?.temperature;
+    weatherData?.timelines?.minutely?.[0]?.values?.temperature;
   const realFeel =
-    details?.timelines?.minutely?.[0]?.values?.temperatureApparent;
-  const humidity = details?.timelines?.minutely?.[0]?.values?.humidity;
-  const wind = details?.timelines?.minutely?.[0]?.values?.windSpeed;
-  const sunriseTimeString = details?.timelines?.daily?.[0]?.values?.sunriseTime;
-  const sunsetTimeString = details?.timelines?.daily?.[0]?.values?.sunsetTime;
-  const temperatureMax = details?.timelines?.daily?.[0]?.values?.temperatureMax;
-  const temperatureMin = details?.timelines?.daily?.[0]?.values?.temperatureMin;
-
+    weatherData?.timelines?.minutely?.[0]?.values?.temperatureApparent;
+  const humidity = weatherData?.timelines?.minutely?.[0]?.values?.humidity;
+  const wind = weatherData?.timelines?.minutely?.[0]?.values?.windSpeed;
+  const sunriseTimeString =
+    weatherData?.timelines?.daily?.[0]?.values?.sunriseTime;
+  const sunsetTimeString =
+    weatherData?.timelines?.daily?.[0]?.values?.sunsetTime;
+  const temperatureMax =
+    weatherData?.timelines?.daily?.[0]?.values?.temperatureMax;
+  const temperatureMin =
+    weatherData?.timelines?.daily?.[0]?.values?.temperatureMin;
+  const cloudBaseAvg =
+    weatherData?.timelines?.minutely?.[0]?.values?.cloudBaseAvg;
   const sunriseDate = new Date(sunriseTimeString);
   const sunsetDate = new Date(sunsetTimeString);
 
@@ -33,11 +44,20 @@ function TemperatureAndDetails({ details }) {
     hourCycle: "h23",
     hour12: true,
   });
-
+  function getWeatherDescription(cloudBaseAvg) {
+    if (cloudBaseAvg < 1) {
+      return { description: "Clear Sky", img: clearSky };
+    } else if (cloudBaseAvg < 3) {
+      return { description: "Partly Cloudy", img: partlyCloudly };
+    } else {
+      return { description: "Cloudy", img: cloudly };
+    }
+  }
+  const { description, img: weatherImg } = getWeatherDescription(cloudBaseAvg);
   return (
     <div>
       <div className="flex items-center  justify-center py-4 sm:py-2 text-xl text-cyan-300">
-        <p>Cloudy</p>
+        <p>{description}</p>
       </div>
       <div className="flex flex-row items-center justify-between sm:px-1 px-2 text-white py-3 sm:py-2">
         <img src={img} alt="" className="w-20" />

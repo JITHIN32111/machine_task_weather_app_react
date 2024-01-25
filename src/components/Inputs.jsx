@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import { IoSearch } from "react-icons/io5";
 import { IoLocationOutline } from "react-icons/io5";
+
 function Inputs({fetchWeatherData}) {
   const [place, setPlace] = useState('');
   const handlePlace = () => {
