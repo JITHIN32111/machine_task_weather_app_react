@@ -6,6 +6,7 @@ How to Run Locally
     cd weather-app
 3.Install dependencies:
     npm install
-4.Run the application:
+4.change Api key(openCage,tommorrow.io)  
+5.Run the application:
    npm run dev
 5.Open your browser and go to http://localhost:3000](http://localhost:5173/ to view the weather app.           
